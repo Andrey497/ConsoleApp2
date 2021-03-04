@@ -12,11 +12,6 @@ namespace Logics
             string connectionString = @"Data Source=DESKTOP-GO0Q29L;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
             string context = "";
             String sqlExpression1 = $"SELECT TOP (1) ";
-            for (int i = 0; i < Parametrs.Count - 1; i++)
-            {
-                sqlExpression1 += $"{Parametrs[i]},";
-            }
-            sqlExpression1 += Parametrs[Parametrs.Count - 1];
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -25,15 +20,22 @@ namespace Logics
                 {
                     var newWord = word.Substring(0, 1).ToUpper() + word.Substring(1).ToLower();
 
-                    var sqlExpression = sqlExpression1+ $"  from CASE_IN.{ nameTable} WHERE { ContextLabel} = '{newWord}'";
+                    var sqlExpression = sqlExpression1 + $"{Parametrs[0]} from CASE_IN.{ nameTable} WHERE { ContextLabel} = '{newWord}'";
                     SqlCommand command = new SqlCommand(sqlExpression, connection);
 
                     if (command.ExecuteScalar() != null)
                     {
                         context = command.ExecuteScalar().ToString();
+                        for (int i = 1; i < Parametrs.Count ; i++)
+                        {
+                            sqlExpression = sqlExpression1 + $"{Parametrs[i]} from CASE_IN.{ nameTable} WHERE { ContextLabel} = '{newWord}'";
+                            command = new SqlCommand(sqlExpression, connection);
+                            context +="," + command.ExecuteScalar().ToString();
+                          
+                        }
                         break;
                     }
-                    words.Remove(context);
+
                 }
             }
             return context;
