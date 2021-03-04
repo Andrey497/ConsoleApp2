@@ -1,17 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Logics
 {
     public class Place
     {
-        private List<string> Parametrs = new List<string>() { "Place_name" };
+
+        private readonly List<string> Parametrs = new List<string>() { "Place_name", "latitude", "longitude", "address_places" };
+        private readonly List<string> ContextLabel = new List<string>() { "place_name" };
+
         private List<string> Words { get; set; }
         public string Answer { get; }
-        public Place()
+        public Place(List<string> words)
         {
-            Answer = BaseMethod.CheckContext(Words, "place", "dbo.key_words", Parametrs);
+            Words = words;
+
+            Answer = BaseMethod.CheckContext(Words, ContextLabel, "dbo.place", Parametrs);
+
+
+
         }
 
 
