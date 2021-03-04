@@ -23,22 +23,32 @@ namespace Logics
                     var sqlExpression = "";
                     if (ContextLabel.Count != 1)
                     {
-                         sqlExpression = sqlExpression1 + $"{Parametrs[0]} from CASE_IN.{ nameTable} WHERE { String.Join($"={newWord} OR ", ContextLabel)}";
-                    }else
+                        var a = String.Join($"={newWord} OR ", ContextLabel);
+                        sqlExpression = sqlExpression1 + $"{Parametrs[0]} from CASE_IN.{ nameTable} WHERE { String.Join($"={newWord} OR ", ContextLabel)}";
+                    }
+                    else
                     {
-                         sqlExpression = sqlExpression1 + $"{Parametrs[0]} from CASE_IN.{ nameTable} WHERE {ContextLabel.First()} ={newWord} ";
+                        sqlExpression = sqlExpression1 + $"{Parametrs[0]} from CASE_IN.{ nameTable} WHERE {ContextLabel.First()} ='{newWord}' ";
                     }
                     SqlCommand command = new SqlCommand(sqlExpression, connection);
 
                     if (command.ExecuteScalar() != null)
                     {
                         context = command.ExecuteScalar().ToString();
-                        for (int i = 1; i < Parametrs.Count ; i++)
+                        for (int i = 1; i < Parametrs.Count; i++)
                         {
-                            sqlExpression = sqlExpression1 + $"{Parametrs[i]} from CASE_IN.{ nameTable} WHERE { ContextLabel} = '{newWord}'";
+                            if (ContextLabel.Count != 1)
+                            {
+                                var a = String.Join($"={newWord} OR ", ContextLabel);
+                                sqlExpression = sqlExpression1 + $"{Parametrs[i]} from CASE_IN.{ nameTable} WHERE { String.Join($"={newWord} OR ", ContextLabel)}";
+                            }
+                            else
+                            {
+                                sqlExpression = sqlExpression1 + $"{Parametrs[i]} from CASE_IN.{ nameTable} WHERE {ContextLabel.First()} ='{newWord}' ";
+                            }
                             command = new SqlCommand(sqlExpression, connection);
-                            context +="," + command.ExecuteScalar().ToString();
-                          
+                            context += "," + command.ExecuteScalar().ToString();
+
                         }
                         break;
                     }

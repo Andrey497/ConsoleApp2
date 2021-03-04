@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace Logics
 {
-    public class Message
+    public class  Message
     {
 
         private List<string> Words { get; set; }
