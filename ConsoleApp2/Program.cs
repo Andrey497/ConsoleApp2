@@ -33,53 +33,60 @@ namespace ConsoleApp1
         {
             try
             {
-                if ((e.Message.Text != null) && (e.Message.Text != "Hi, Bot!"))
+
+                if ((e.Message.Text != null))
                 {
-                    await botClient.SendTextMessageAsync(
-                      chatId: e.Message.Chat,
-                      text: "You said:\n" + e.Message.Text
-                    );
-                    //}
-                    var Message = new Message(e.Message.Text.ToLower());
-                    
-                    if (Message.KeyWords == "Place")
-                    {
-                        if (Message.ParametersReturn.Length == 0)
+
+                    if (e.Message.Text.ToLower().Contains("Вопрос")){ }else {
+
+
+                        var Message = new Message(e.Message.Text.ToLower());
+                        if (Message.Answer == "Привет меня зовут CASEIN_Telegrambot. Чем я могу помоч?")
                         {
                             await botClient.SendTextMessageAsync(
-                            chatId: e.Message.Chat,
-                            text: "Простити,но я не знаю где это находится"
-                        );
+                                chatId: e.Message.Chat,
+                                text: Message.Answer);
                         }
-                        var msg = await botClient.SendVenueAsync(
-                                 chatId: e.Message.Chat.Id,
-                                latitude: float.Parse(Message.ParametersReturn[1], CultureInfo.InvariantCulture),
-                                longitude: float.Parse(Message.ParametersReturn[2], CultureInfo.InvariantCulture),
-                                title: Message.ParametersReturn[0],
-                                address: Message.ParametersReturn[3]
-                            );
 
+                        if (Message.KeyWords == "Place")
+                        {
+                            if (Message.ParametersReturn.Length == 0)
+                            {
+                                await botClient.SendTextMessageAsync(
+                                chatId: e.Message.Chat,
+                                text: "Простити,но я не знаю где это находится"
+                            );
+                            }
+                            var msg = await botClient.SendVenueAsync(
+                                     chatId: e.Message.Chat.Id,
+                                    latitude: float.Parse(Message.ParametersReturn[1], CultureInfo.InvariantCulture),
+                                    longitude: float.Parse(Message.ParametersReturn[2], CultureInfo.InvariantCulture),
+                                    title: Message.ParametersReturn[0],
+                                    address: Message.ParametersReturn[3]
+                                );
+
+                        }
+                        else
+
+
+                        if (Message.KeyWords == "Person")
+                        {
+                            var msg = await botClient.SendContactAsync(
+                                            chatId: e.Message.Chat.Id,
+                                            phoneNumber: Message.ParametersReturn[3],
+                                            firstName: Message.ParametersReturn[0] +" "+ Message.ParametersReturn[1],
+                                            lastName: Message.ParametersReturn[2],
+                                            vCard: "BEGIN:VCARD\n" +
+                                                    "VERSION:3.0\n" +
+                                                    "N:Solo;Han\n" +
+                                                    "ORG:Scruffy-looking nerf herder\n" +
+                                                    $"TEL;TYPE=voice,work,pref:{Message.ParametersReturn[3]}\n" +
+                                                    $"EMAIL:{Message.ParametersReturn[4]}\n" +
+                                                    "END:VCARD"
+                                            );
+                        }
                     }
-                    else
-                        
-                    
-                    if (Message.KeyWords == "Person")
-                    {
-                        var msg = await botClient.SendContactAsync(
-                                        chatId: e.Message.Chat.Id,
-                                        phoneNumber: Message.ParametersReturn[3],
-                                        firstName: Message.ParametersReturn[0]+ Message.ParametersReturn[1],
-                                        lastName: Message.ParametersReturn[2],
-                                        vCard: "BEGIN:VCARD\n" +
-                                                "VERSION:3.0\n" +
-                                                "N:Solo;Han\n" +
-                                                "ORG:Scruffy-looking nerf herder\n" +
-                                                $"TEL;TYPE=voice,work,pref:{Message.ParametersReturn[3]}\n" +
-                                                $"EMAIL:{Message.ParametersReturn[4]}\n" +
-                                                "END:VCARD"
-                                        );
-                    }
-                }
+                } 
             }
             catch
             {

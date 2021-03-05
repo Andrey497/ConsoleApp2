@@ -19,30 +19,38 @@ namespace Logics
         {
 
             var clearString = Regex.Replace(stringOfMessage, "[-.?!)(,:]", " ");
-            Words = (clearString.Split(' ')).ToList();
-            Words.RemoveAll(x => (x.Trim().Length == 0));
-            KeyWords = BaseMethod.CheckContext(Words, ContextLabel, "dbo.key_words", Parametrs);
-            if (KeyWords == "")
+            if (clearString.Contains("привет"))
             {
-                Answer = "Вы ввели неправильный запрос, я  всеголишь бот.";
+                Answer = "Привет меня зовут CASEIN_Telegrambot. Чем я могу помоч?";
+
             }
             else
             {
-
-                switch (KeyWords)
+                Words = (clearString.Split(' ')).ToList();
+                Words.RemoveAll(x => (x.Trim().Length == 0));
+                KeyWords = BaseMethod.CheckContext(Words, ContextLabel, "dbo.key_words", Parametrs);
+                if (KeyWords == "")
                 {
-                    case "Place":
-                        var answerPlace = new Place(Words);
-                        Answer = answerPlace.Answer;
-                        ParametersReturn = Answer.Split(',');
-                        break;
-                   case "Person":
-                        var answerPerson = new Person(Words);
-                        Answer = answerPerson.Answer;
-                        ParametersReturn = Answer.Split(',');
-                        break;
+                    Answer = "Вы ввели неправильный запрос, я  всеголишь бот.";
                 }
-                   
+                else
+                {
+
+                    switch (KeyWords)
+                    {
+                        case "Place":
+                            var answerPlace = new Place(Words);
+                            Answer = answerPlace.Answer;
+                            ParametersReturn = Answer.Split(',');
+                            break;
+                        case "Person":
+                            var answerPerson = new Person(Words);
+                            Answer = answerPerson.Answer;
+                            ParametersReturn = Answer.Split(',');
+                            break;
+                    }
+
+                }
             }
 
         }
