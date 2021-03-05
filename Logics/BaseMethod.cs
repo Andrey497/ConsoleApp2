@@ -23,7 +23,7 @@ namespace Logics
                     var sqlExpression = "";
                     if (ContextLabel.Count != 1)
                     {
-                        var a = String.Join($"={newWord} OR ", ContextLabel);
+                        
                         sqlExpression = sqlExpression1 + $"{Parametrs[0]} from CASE_IN.{ nameTable} WHERE { String.Join($"={newWord} OR ", ContextLabel)}";
                     }
                     else
@@ -39,7 +39,7 @@ namespace Logics
                         {
                             if (ContextLabel.Count != 1)
                             {
-                                var a = String.Join($"={newWord} OR ", ContextLabel);
+                               
                                 sqlExpression = sqlExpression1 + $"{Parametrs[i]} from CASE_IN.{ nameTable} WHERE { String.Join($"={newWord} OR ", ContextLabel)}";
                             }
                             else

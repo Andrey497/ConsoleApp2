@@ -33,12 +33,9 @@ namespace ConsoleApp1
         {
             try
             {
-                if ((e.Message.Text != null) && (e.Message.Text != "Hi, Bot!"))
+                if ((e.Message.Text != null) )
                 {
-                    await botClient.SendTextMessageAsync(
-                      chatId: e.Message.Chat,
-                      text: "You said:\n" + e.Message.Text
-                    );
+                    
                     //}
                     var Message = new Message(e.Message.Text.ToLower());
                     
