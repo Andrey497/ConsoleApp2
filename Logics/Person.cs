@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Logics
 {
-    public  class Person
+    public  class Person 
     {
         private readonly List<string> Parametrs = new List<string>() {  "person_firstname", "person_middlename", "person_secondname", "person_Telephone", "person_email"};
         private readonly List<string> ContextLabel = new List<string>(){ "person_post" };
